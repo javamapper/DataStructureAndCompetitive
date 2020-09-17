@@ -1,5 +1,8 @@
 package com.javamapper.problems;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.javamapper.entity.TreeNode;
 
 public class TreeProblems {
@@ -108,4 +111,72 @@ public class TreeProblems {
 		return root;
 	}
 
+	/**
+	 * 
+	 */
+	public void bildBSTTreeRec() {
+		List<Integer> treeElements = Arrays.asList(50, 30, 70, 20, 25, 60, 10, 5, 75, 90);
+		TreeNode root=null;
+		for (Integer ele : treeElements) {
+			  root = insertBstTreeRec(root,ele);
+		}
+		TreeNode.drawTree(root);
+	}
+	
+	/**
+	 * 
+	 */
+	public void bildBSTTreeIter() {
+		List<Integer> treeElements = Arrays.asList(50, 30, 70, 20, 25, 60, 10, 5, 75, 90);
+		TreeNode root = null;
+		for (Integer ele : treeElements) {
+			root = insertBstTreeItr(root, ele);
+		}
+		TreeNode.drawTree(root);
+	}
+	private TreeNode insertBstTreeRec(TreeNode root, Integer ele) {
+		if (root == null) {
+			TreeNode node = new TreeNode(ele);
+			return node;
+		} else if (root.val < ele) {
+			root.right = insertBstTreeRec(root.right, ele);
+			if (root.right != null) {
+				root.right.parent = root;
+			}
+		} else if (root.val > ele) {
+			root.left = insertBstTreeRec(root.left, ele);
+			if (root.left != null) {
+				root.left.parent = root;
+			}
+		}
+		return root;
+	}
+
+	private TreeNode insertBstTreeItr(TreeNode root, Integer ele) {
+		TreeNode temp = null;
+		TreeNode rootPoint=root;
+		if (root == null) {
+			TreeNode node = new TreeNode(ele);
+			return node;
+		}
+		while (root != null) {
+			temp = root;
+			if (root.val < ele) {
+				root = root.right;
+			} else if (root.val > ele) {
+				root = root.left;
+			}
+		}
+		if (temp == null)
+			return root;
+		TreeNode newNode = new TreeNode(ele);
+		if (temp.val > ele) {
+			temp.left = newNode;
+			newNode.parent=temp;
+		} else {
+			temp.right = newNode;
+			newNode.parent=temp;
+		}
+		return rootPoint;
+	}
 }

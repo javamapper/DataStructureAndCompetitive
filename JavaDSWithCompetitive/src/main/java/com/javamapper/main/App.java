@@ -31,12 +31,18 @@ public class App {
 		Set<Entry<Object, Object>> propValueSet = properties.entrySet();
 		propValueSet.stream()
 					.map(entry->String.valueOf(entry.getValue()))
-					.sorted((str1,str2)->str1.compareTo(str2))
+					.sorted((str1,str2)->{
+						String strArr1=str1.split(" ")[0];
+						String strArr2=str2.split(" ")[0];
+						return Integer.valueOf(strArr1.substring(0, strArr1.length()-1))-Integer.valueOf(strArr2.substring(0, strArr2.length()-1));
+					})
 					.forEach(System.out::println);
 		String indexVal = scanner.nextLine();
 		Optional<Entry<Object, Object>> propSelection = propValueSet.stream()
-																	.filter(val->((String)val.getValue()).contains(indexVal))
-																	.findFirst();
+																	.filter(val->{
+																		String[] strArr=((String)val.getValue()).split(" ");
+																		return strArr[0].substring(0, strArr[0].length()-1).equals(indexVal);
+																	}).findFirst();
 		propSelection.ifPresent(propValEntry -> {
 			String key = String.valueOf(propValEntry.getKey());
 			String className = key.substring(0, key.lastIndexOf('.'));
